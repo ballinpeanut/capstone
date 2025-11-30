@@ -11,6 +11,15 @@ function TripDetails() {
     const [experiences, setExperiences] = useState([]);
     const navigate = useNavigate();
 
+    const storedUser = localStorage.getItem("user");
+    const currentUser = storedUser ? JSON.parse(storedUser) : null;
+
+    const isOwner = 
+        currentUser && trip && (
+            (trip.user_id && trip.user_id._id === currentUser._id) ||
+            trip.user_id === currentUser._id
+        );
+
     {/* FETCH TRIP DATA FROM BACKEND */}
     useEffect(() => {
         const fetchTrips = async() => {
@@ -79,33 +88,75 @@ function TripDetails() {
         <div className="container mt-4">
             {/* DISPLAY TRIP NAME AND SUMMARY ON TRIP DETAILS PAGE */}
             {trip ? (
-                <div className="card p-4 shadow" style={{minHeight: "600px"}}>
+                <div className="card p-4 shadow">
                     <div style={{flexGrow: 1}}>
                         <h2>{trip.trip_name}</h2>
                         <p>{trip.trip_summary}</p>
-                        <TripMap experiences={trip.experiences} />
+                        {trip?.experiences?.length > 0 ? (
+                            <TripMap experiences={trip.experiences} />
+                        ) : (
+                            <div className="d-flex flex-column justify-content-center align-items-center text-muted">
+                                <i className="bi bi-map" style={{ fontSize: "2.5rem", marginBottom: "10px" }}></i>
+                                <p className="m-0 fw-semibold">No map available</p>
+                                <p className="m-0 small">Add an experience with a location to see it appear here.</p>
+                            </div>
+                        )}
                     </div>
                     {/* BUTTONS TO NAVIGATE BACK, EDIT, AND DELETE TRIP */}
                     <div className="d-flex justify-content-end mt-3">
-                        <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(-1)}>
+                        <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(-1)} title="Back to Trips">
                             <i className="bi bi-arrow-left"></i>
                         </button>
-                        <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(`/experiences`)}>Add an experience!</button>
-                        <button className="btn btn-secondary me-2 align-self-start" onClick={() => setEditForm(true)}>
-                            <i className="bi bi-pencil-square"></i>
-                        </button>
-                        <button className="btn btn-secondary me-2 align-self-start" onClick={handleDeleteTrip}>
-                            <i class="bi bi-trash"></i>
-                        </button>
+
+                        { /* Only show if it is user's trip */}
+                        {isOwner && (
+                            <>
+                            <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(`/experiences`)}>Add an experience!</button>
+                            <button className="btn btn-secondary me-2 align-self-start" onClick={() => setEditForm(true)} title="Edit trip">
+                                <i className="bi bi-pencil-square"></i>
+                            </button>
+                            <button className="btn btn-secondary me-2 align-self-start" onClick={handleDeleteTrip} title="Delete trip">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            </>
+                        )}
                     </div>
                 </div>
             ) : (
                 <p>Loading trip details...</p>
             )}
+            {/* EXPERIENCES SECTION HEADER */}
+            { trip && (
+                <div className="mt-4">
+                    <h5 className="fw-semibold mb-1">
+                        Experiences in this Trip {" "}
+                        {Array.isArray(trip.experiences) && trip.experiences.length > 0
+                        ? `(${trip.experiences.length})`
+                        : ""}
+                    </h5>
+                    <p className="text-muted mb-0">
+                        These are the experiences added to this trip. Click a card below to see more details.
+                    </p>
+                </div>
+            )}
+
+            {/* PLACEHOLDER FOR NO EXPERIENCES */}
+            {trip?.experiences?.length === 0 && (
+                <div className="text-center text-muted mt-4 mb-4">
+                    <div className="p-4 border rounded" style={{ maxWidth: "500px", margin: "0 auto", backgroundColor: "#fafafa" }}>
+                        <h6 className="fw-semibold mb-2">No Experiences Added.</h6>
+                        <p className="mb-0">
+                            This trip hasn't had any experiences added yet. 
+                            {isOwner && " Click 'Add an experience!' to create one."}
+                        </p>
+                    </div>
+                </div>
+            )}
+            
             {/* DISPLAY EXPERIENCES FROM TRIP */}
             <div className="row mt-4">
                 {trip?.experiences?.map((experience) => (
-                    <div className="col-md-4 mb-4 py-4" key={experience._id}>
+                    <div className="col-md-4 mb-3" key={experience._id}>
                         <div className="card h-100 shadow-sm"
                             style={{ cursor: "pointer" }}
                             onClick={() => navigate(`/experiences/${experience._id}`)}>
@@ -128,7 +179,7 @@ function TripDetails() {
                         <form onSubmit={handleUpdateTrip}>
                             <div className="modal-body">
                                 <div className="mb-3">
-                                    <label className="form-label">Location:</label>
+                                    <label className="form-label">Trip name:</label>
                                     <input
                                     type="text"
                                     className="form-control"

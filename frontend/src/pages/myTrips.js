@@ -129,17 +129,80 @@ function Trips() {
         <div className="container mt-4">
             <div className="row">
             {/* CARD FOR TRIP NAME */}
-                {trips.map((trip) => (
+                {trips.map((trip) => {
+                    // count # of experiences
+                    const experienceCount = Array.isArray(trip.experiences)
+                    ? trip.experiences.length : 0;
+                    const experienceLabel = experienceCount === 1 ? "experience" : "experiences";
+
+                    // username of who created the trip
+                    const tripCreatorName = trip.user_id?.username || "Unkown Traveler";
+
+                    // updated_at if present, otherwise use created_at
+                    const tripDate = trip.updated_at || trip.created_at;
+                    const formattedDate = tripDate
+                        ? new Date(tripDate).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                        }) : null;
+                        
+                return (
                     <div className="col-md-4 mb-4" key={trip._id}>
                         <div className="card h-100 shadow-sm"
                             style={{ cursor: "pointer" }}
                             onClick={() => navigate(`/trips/${trip._id}`, {state: {trip}})}>
-                            <div className="card-body">
-                                <h5 className="card-title text-center" class="text-center">{trip.trip_name}</h5>
+                            
+                            {/* Trip Card */}
+                            <div className="card-body d-flex flex-column position relative px-4 py-4">
+                                {/* Experience Count */}
+                                <span className="badge bg-light text-muted fw-normal"
+                                style={{
+                                    position: "absolute",
+                                    top: "0.75rem",
+                                    right: "0.75rem",
+                                    fontSize: "0.75rem",
+                                    padding: "0.35 rem 0.6rem"
+                                }}>
+                                    {experienceCount} {experienceLabel}
+                                </span>
+
+                                {/* Trip Title */}
+                                <h5 className="card-title text-center mb-3">
+                                    {trip.trip_name}
+                                </h5>
+
+                                {/* Trip Summary */}
+                                {trip.trip_summary && (
+                                    <p className="card-text text-muted text-center mb-4">
+                                        {trip.trip_summary}    
+                                    </p>
+                                )}
+
+                                <div className="flex-grow-1"/>
+
+                                {/* Trip Metadata */}
+                                <div className="d-flex justify-content-between text-muted small mt-1"
+                                    style={{fontSize: "0.75rem"}}>
+                                    {/* Created By */}
+                                    <span>
+                                        Created by: {" "}
+                                        <span className="fw-semibold">
+                                            {tripCreatorName}
+                                        </span> 
+                                    </span>
+                                    {/* Date */}
+                                    {formattedDate && (
+                                        <span>
+                                            Updated: {formattedDate}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                ))}
+                );
+            })}
             </div>
 
             {/* ADD TRIP BUTTON */}
