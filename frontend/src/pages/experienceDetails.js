@@ -107,16 +107,18 @@
 
     return (
         <div className="container mt-4">
-            <div className="card p-4 shadow d-flex flex-column" style={{minHeight: "900px"}}>
-                <div style={{flexGrow: 1}}>
+            <div className="d-flex justify-content-center mt-4" style={{ width: "100%" }}>
+                <div className="card p-4 shadow d-flex flex-column"style={{maxWidth: "900px", width: "100%"}}>
                     <h2>{experience.title}</h2>
                     <p className="text-muted">{experience.location?.name}</p>
+
                     {/* DATE TRAVELED */}
                     <h6>Date Traveled: {new Date(experience.date_traveled).toLocaleString(undefined, {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
                     })}</h6>
+
                     {/* AVERAGE SCORE */}
                     <p><strong>Score: </strong>{experience.averageRating?.toFixed(1)}/10.0</p>
                     {experience.images?.length > 0 && (
@@ -138,28 +140,36 @@
                         hour12: true
                     })}</h6>
                     <p>{experience.description}</p>
-                </div>
+
                 {/* KEYWORDS AND BUTTONS TO RATE AND SAVE */}
-                    <div className="d-flex justify-content-between align-items-center mt-3">
-                    <p className="mb-0 text-wrap">Keywords: {experience.keywords?.join(", ")}</p>
-                    {user && (
-                    <div className="d-flex gap-2">
-                        <button
-                            className="btn btn-secondary"
-                            onClick={() => setShowRating(true)}
-                        >
-                            <i className="bi bi-star-fill"></i>
-                        </button>
-                        <button
-                            className="btn btn-secondary"
-                            onClick={() => setShowModal(true)}
-                        >
-                            <i className="bi bi-bookmark-plus-fill"></i>
-                        </button>
+                    <div className="d-flex justify-content-between align-items-center mt-3 w-100">
+                        <p className="mb-0 text-wrap">Keywords: {experience.keywords?.join(", ")}</p>
+                        
+                        <div className="d-flex gap-2">
+                             {/* back button */}
+                            <button className="btn btn-secondary" onClick={() => navigate(-1)} title="Back">
+                                <i className="bi bi-arrow-left"></i>
+                            </button>
+                            
+                             {/* Logged in only buttons */}
+                            {user && (
+                                <>
+                                {/* Add rating button */}
+                                <button className="btn btn-secondary" onClick={() => setShowRating(true)}>
+                                    <i className="bi bi-star-fill"></i>
+                                </button>
+
+                                {/* Add to a Trip */}
+                                <button className="btn btn-secondary" onClick={() => setShowModal(true)}>
+                                    <i className="bi bi-bookmark-plus-fill"></i>
+                                </button>
+                                </>
+                            )}
                         </div>
-                        )}
                     </div>
+                </div>
             </div>
+     
             {/* DISPLAY SAVE TO MY TRIP MODAL */}
             {showModal&& (
                 <div className="modal-content p-4 shadow bg-white rounded" style={{maxWidth: "400px", margin: "100px auto"}}>

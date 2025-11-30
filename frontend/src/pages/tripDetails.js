@@ -111,7 +111,7 @@ function TripDetails() {
                         { /* Only show if it is user's trip */}
                         {isOwner && (
                             <>
-                            <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(`/experiences`)}>Add an experience!</button>
+                            <button className="btn btn-secondary me-2 align-self-start" onClick={() => navigate(`/trips/${tripId}/add-experience`)}>Add an experience!</button>
                             <button className="btn btn-secondary me-2 align-self-start" onClick={() => setEditForm(true)} title="Edit trip">
                                 <i className="bi bi-pencil-square"></i>
                             </button>
