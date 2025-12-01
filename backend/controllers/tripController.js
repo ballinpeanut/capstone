@@ -27,8 +27,9 @@ GET /api/trips
 ---------------------------------------------------------------------- */
 const getAllTrips = asyncHandler(async(req, res) => {
     const trips = await Trip.find()
+        .populate("user_id", "username")
         .populate("experiences")
-        .sort({createdAt: -1});
+        .sort({created_at: -1});
 
     res.status(200).json(trips);
 });
@@ -38,7 +39,10 @@ Get only user created trips (private)
 GET /api/trips
 ---------------------------------------------------------------------- */
 const getUserTrips = asyncHandler(async (req, res) => {
-    const trips = await Trip.find({ user_id: req.user._id });
+    const trips = await Trip.find({ user_id: req.user._id })
+        .populate("user_id", "username")
+        .populate("experiences")
+        .sort({created_at: -1});        
     res.status(200).json(trips);
 });
 
@@ -51,7 +55,9 @@ GET /api/trips/:id
 const getTrip = asyncHandler (async (req, res) => {
     const { id } = req.params;
 
-    const trip = await Trip.findById(id).populate("experiences");
+    const trip = await Trip.findById(id)
+        .populate("user_id", "username")
+        .populate("experiences");
 
     if(!trip) {
         res.status(404);

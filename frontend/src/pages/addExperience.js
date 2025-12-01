@@ -89,7 +89,6 @@ function AddExperience() {
             const response = await fetch("http://localhost:5555/api/experiences", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", 
-                    // "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify(newExperience),
                 credentials: "include",
@@ -102,7 +101,29 @@ function AddExperience() {
                 return;
             }
 
-            const experienceId = data.newExperience._id;
+            const experienceId = data.newExperience?._id || data._id;
+
+            // adding experience directly from trip
+            if (tripId && experienceId) {
+                const attachRes = await fetch(`http://localhost:5555/api/trips/${tripId}/addExperience`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    credentials: "include",
+                    body: JSON.stringify({experience_id: experienceId}),
+                });
+                if (!attachRes.ok) {
+                    console.error("Error adding experience to trip.");
+                }
+                alert("Experience added to Trip!")
+            }
+
+            // go back to trip
+            if (tripId) {
+                navigate(`/trips/${tripId}`);
+            } else {
+                alert("Experience added")
+                navigate(`/experiences`, {state: {refresh: true}});
+            }
 
             if (imageFile) {
                 const formData = new FormData();
@@ -117,8 +138,8 @@ function AddExperience() {
                 console.log("Image upload status:", uploadResponse.status);
             }
 
-            alert("Experience added!");
-            navigate(`/experiences`, { state: { refresh: true } });
+            // alert("Experience added!");
+            // navigate(`/experiences`, { state: { refresh: true } });
 
         } catch (error) {
             console.error("Error adding experience:", error);
@@ -233,8 +254,13 @@ function AddExperience() {
                         <option value="private">Private</option>
                     </select>
                 </div>
+                <div className="d-flex justify-content-between mt-3">
+                    <button type="button" className="btn btn-secondary"
+                    onClick={() => navigate(-1)}>Cancel
+                    </button>
 
-                <button type="submit" className="btn btn-primary">Add Experience</button>
+                    <button type="submit" className="btn btn-primary">Add Experience</button>
+                </div>
             </form>
         </div>
     );

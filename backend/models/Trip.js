@@ -20,10 +20,12 @@ const tripSchema = new mongoose.Schema(
             maxlength: 300, 
             trim: true,  
         },
-        experiences: {
-            type: [mongoose.Schema.Types.ObjectId],
+        experiences: [
+            {
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Experience"
-        }
+            }
+        ]
     },
     {
         collection: "Trips",
