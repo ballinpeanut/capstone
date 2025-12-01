@@ -21,8 +21,8 @@ Before running the project locally, make sure you have:
 - A MongoDB Atlas account & cluster access
 
 #### 1. Clone the Repository & install Dependencies
-- `git clone https://github.com/Patrick-Culley/voyagr-app.git`
-- `cd voyagr-app/backend`
+- `git clone https://github.com/ballinpeanut/capstone.git`
+- `cd capstone/backend`
 - `nmp install`
 - This will install express, mongoose, dotenv, cors (front-end)
 #### 2. Create a .env File
