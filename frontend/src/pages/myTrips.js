@@ -127,6 +127,7 @@ function Trips() {
 
     return (
         <div className="container mt-4">
+            <h2 className="mb-4">Trips</h2>
             <div className="row">
             {/* CARD FOR TRIP NAME */}
                 {trips.map((trip) => {

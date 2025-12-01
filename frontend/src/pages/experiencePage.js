@@ -23,6 +23,7 @@ function ExperiencesPage() {
 
     return (
         <div className="container mt-4">
+            <h2 className="mb-4">Experiences</h2>
             {experiences.length === 0 && (
                 <p>No experiences found.</p>
             )}
