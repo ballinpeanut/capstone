@@ -15,7 +15,7 @@ app.use(express.json());
 
 const allowedOrigins = [
     "http://localhost:3000",
-
+    "https://capstone-frontend-lcsf.onrender.com",
 ];
 // allow React frontend to access routes
 // allow frontend to send httpOnly cookies
