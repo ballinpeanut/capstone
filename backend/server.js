@@ -8,15 +8,25 @@ const cookieParser = require("cookie-parser");
 connectDb();
 const app = express();
 // This is for deployment 
-const port = process.env.PORT 
+const port = process.env.PORT || 5555;
 
 // Use for testing -> const port = process.env.PORT || 5555;
 app.use(express.json());
 
+const allowedOrigins = [
+    "http://localhost:3000",
+
+];
 // allow React frontend to access routes
 // allow frontend to send httpOnly cookies
 app.use(cors({ 
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
  }));
 
