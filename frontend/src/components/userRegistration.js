@@ -6,13 +6,14 @@ function UserRegistration() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const URL = process.env.REACT_APP_URL;
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         {/* HANDLES FORM SUBMISSION FOR USER REGISTRATION. POST REQUEST SENT TO BACKEND. */}
         try{
-            const response = await fetch("http://localhost:5555/api/users/register", {
+            const response = await fetch(`${URL}/api/users/register`, {
               method: "POST",
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify({username, email, password}),

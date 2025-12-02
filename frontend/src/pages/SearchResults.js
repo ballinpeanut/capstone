@@ -6,13 +6,15 @@ function SearchResults() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const URL = process.env.REACT_APP_URL;
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const q = params.get("search");
 
     if (!q) return;
 
-    fetch(`http://localhost:5555/api/experiences/search?search=${q}`)
+    fetch(`${URL}/api/experiences/search?search=${q}`)
       .then((res) => res.json())
       .then((data) => setResults(data))
       .catch((err) => console.error(err));

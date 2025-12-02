@@ -6,11 +6,13 @@ function UserLogin() {
     const [password, enterPassword] = useState("");
     const navigate = useNavigate();
 
+    const URL = process.env.REACT_APP_URL;
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try{
-            const response = await fetch("http://localhost:5555/api/users/login", {
+            const response = await fetch(`${URL}/api/users/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({email, password}),

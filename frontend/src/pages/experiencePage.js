@@ -8,10 +8,12 @@ function ExperiencesPage() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
+    const URL = process.env.REACT_APP_URL;
+
     useEffect(() => {
         const fetchExperiences = async () => {
             try {
-                const response = await fetch("http://localhost:5555/api/experiences");
+                const response = await fetch(`${URL}/api/experiences`);
                 const data = await response.json();
                 setExperiences(data);
             } catch (error) {

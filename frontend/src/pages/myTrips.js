@@ -12,11 +12,13 @@ function Trips() {
     const [allTrips, setAllTrips] = useState([]);      // <--- NEW: store all trips
     const [showMyTrips, setShowMyTrips] = useState(false);
 
+    const URL = process.env.REACT_APP_URL;
+
     {/* LOAD TRIP DATA FROM BACKEND */}
     useEffect(() => {
         const fetchTrips = async() => {
             try {
-                const response = await fetch(`http://localhost:5555/api/trips`, {
+                const response = await fetch(`${URL}/api/trips`, {
                     credentials: "include"
                 });
                 const data = await response.json();
@@ -41,7 +43,7 @@ function Trips() {
 
         const checkLoginStatus = async () => {
             try {
-                const res = await fetch("http://localhost:5555/api/trips/my-trips", {
+                const res = await fetch(`${URL}/api/trips/my-trips`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -72,7 +74,7 @@ function Trips() {
         };
 
         try {
-            const response = await fetch("http://localhost:5555/api/trips", {
+            const response = await fetch(`${URL}/api/trips`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
@@ -102,7 +104,7 @@ function Trips() {
 
         if (!showMyTrips) {
             try {
-                const res = await fetch("http://localhost:5555/api/trips/my-trips", {
+                const res = await fetch(`${URL}/api/trips/my-trips`, {
                     method: "GET",
                     credentials: "include",
                 });

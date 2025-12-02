@@ -7,6 +7,8 @@ function AddExperience() {
     const loaded = useLoadGoogleMaps();    
     const { tripId } = useParams();
     const navigate = useNavigate();
+    const URL = process.env.REACT_APP_URL;
+
 
     // check if loaded after all hooks 
     if (!loaded) {
@@ -86,7 +88,7 @@ function AddExperience() {
         console.log("Sending experience:", newExperience);
 
         try {
-            const response = await fetch("http://localhost:5555/api/experiences", {
+            const response = await fetch(`${URL}/api/experiences`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", 
                 },
@@ -105,7 +107,7 @@ function AddExperience() {
 
             // adding experience directly from trip
             if (tripId && experienceId) {
-                const attachRes = await fetch(`http://localhost:5555/api/trips/${tripId}/addExperience`, {
+                const attachRes = await fetch(`${URL}/api/trips/${tripId}/addExperience`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     credentials: "include",
@@ -130,7 +132,7 @@ function AddExperience() {
                 formData.append("image", imageFile);
                 formData.append("user_id", user._id);
 
-                const uploadResponse = await fetch(`http://localhost:5555/api/upload/${experienceId}`, {
+                const uploadResponse = await fetch(`{URL}/api/upload/${experienceId}`, {
                     method: "POST",
                     body: formData,
                 });

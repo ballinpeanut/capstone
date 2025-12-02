@@ -13,11 +13,13 @@
 
     const user = JSON.parse(localStorage.getItem("user"));
 
+    const URL = process.env.REACT_APP_URL;
+
     {/* FETCH EXPERIENCE DATA FROM BACKEND. */}
     useEffect(() => {
         const fetchExperiences = async() => {
             try {
-                const response = await fetch(`http://localhost:5555/api/experiences/${experienceId}`);
+                const response = await fetch(`${URL}/api/experiences/${experienceId}`);
                 const data = await response.json();
                 setExperience(data);
             } catch(error) {
@@ -33,7 +35,7 @@
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 const userId = user._id;
-                const response = await fetch(`http://localhost:5555/api/trips`, {
+                const response = await fetch(`${URL}/api/trips`, {
                      headers: {
                         // "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -57,7 +59,7 @@
         if (!selectedTrip) return alert("Please select a trip.");
 
         try {
-            const response = await fetch(`http://localhost:5555/api/trips/${selectedTrip}/addExperience`, {
+            const response = await fetch(`${URL}/api/trips/${selectedTrip}/addExperience`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
@@ -82,7 +84,7 @@
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`http://localhost:5555/api/ratings/${experience._id}`, {
+            const response = await fetch(`${URL}/api/ratings/${experience._id}`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json", 
@@ -93,7 +95,7 @@
             });
             if (!response.ok) throw new Error("Failed to submit rating.");
 
-            const updatedResponse = await fetch(`http://localhost:5555/api/experiences/${experienceId}`);
+            const updatedResponse = await fetch(`${URL}/api/experiences/${experienceId}`);
             const updatedData = await updatedResponse.json();
             setExperience(updatedData);
 

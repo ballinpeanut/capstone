@@ -7,6 +7,7 @@ function NavigationBar() {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
+    const URL = process.env.REACT_APP_URL;
 
     {/* ALLOWS APP TO REACT TO CHANGES IN localStorage WHEN "user" ITEM IS ADDED/REMOVED */}
     useEffect(() => {
@@ -26,7 +27,7 @@ function NavigationBar() {
 
         // send request to log out to backend
         try {
-            const response = await fetch("http://localhost:5555/api/users/logout", {
+            const response = await fetch(`${URL}/api/users/logout`, {
                 method: 'POST',
                 credentials: "include",
             });

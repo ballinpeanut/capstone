@@ -20,11 +20,13 @@ function TripDetails() {
             trip.user_id === currentUser._id
         );
 
+    const URL = process.env.REACT_APP_URL;
+
     {/* FETCH TRIP DATA FROM BACKEND */}
     useEffect(() => {
         const fetchTrips = async() => {
             try {
-                const response = await fetch(`http://localhost:5555/api/trips/${tripId}`, { 
+                const response = await fetch(`${URL}/api/trips/${tripId}`, { 
                     credentials: "include",
                 });
                 const data = await response.json();
@@ -43,7 +45,7 @@ function TripDetails() {
     const handleUpdateTrip = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:5555/api/trips/${tripId}`, {
+        const response = await fetch(`${URL}/api/trips/${tripId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json", 
@@ -70,7 +72,7 @@ function TripDetails() {
         const confirmDelete = window.confirm("Are you sure you want to delete this trip?");
         if (!confirmDelete) return;
 
-        const response = await fetch(`http://localhost:5555/api/trips/${tripId}`, {
+        const response = await fetch(`${URL}/api/trips/${tripId}`, {
             method: "DELETE",
                 credentials: "include",
         });

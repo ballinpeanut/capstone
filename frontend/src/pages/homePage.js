@@ -5,11 +5,13 @@ function Home() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const URL = process.env.REACT_APP_URL;
+
   // Check if user is logged in (using your cookie + /my-trips route)
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const res = await fetch("http://localhost:5555/api/trips/my-trips", {
+        const res = await fetch(`${URL}/api/trips/my-trips`, {
           method: "GET",
           credentials: "include",
         });
