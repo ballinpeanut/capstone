@@ -132,7 +132,7 @@ function AddExperience() {
                 formData.append("image", imageFile);
                 formData.append("user_id", user._id);
 
-                const uploadResponse = await fetch(`{URL}/api/upload/${experienceId}`, {
+                const uploadResponse = await fetch(`${URL}/api/upload/${experienceId}`, {
                     method: "POST",
                     body: formData,
                 });
